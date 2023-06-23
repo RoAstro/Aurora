@@ -22,7 +22,7 @@
     </div>
     </center>
     <script>
-        stopwatchb=false;
+        cronobool=false;
         timer_start=false;
 var start1=false;
 
@@ -32,10 +32,14 @@ var start1=false;
 voice_detect();
 
 
+last_site='';
 
 
 
+function mem_save(){
+    localStorage.setItem(datr[1], document.getElementById('mem').value );
 
+}
 
         function function1(){
     d= new Date();
@@ -45,6 +49,17 @@ voice_detect();
     datr=input.split(" ");
 
 date='';
+if(datr.length==2 & datr[0]=='memorie' & 0<datr[1]<11){
+    document.getElementById('out').innerHTML='<input id="mem" type="search" id="mem" ><button onclick="mem_save()">Trimite</button>';
+
+        url=localStorage.getItem(datr[1]);
+        document.getElementById('mem').value=url;
+        if(last_site != url){
+       window.open(url);
+       last_site=url;}
+
+}
+
     if(datr[datr.length-1]=='google'){
         datr.pop();
         i=0;
@@ -53,7 +68,42 @@ date='';
             i++;
         }
         urlvar="https://www.google.com/search?q="+date;
+
+     if(last_site != urlvar){
         window.open(urlvar, "_blank");
+        last_site=urlvar;
+    }
+       
+    }
+    if(datr[datr.length-1]=='youtube'){
+        datr.pop();
+        i=0;
+        while(i<datr.length){
+            date=date+"+"+datr[i];
+            i++;
+        }
+        urlvar="https://www.youtube.com/results?search_query="+date;
+     
+        if(last_site != urlvar){
+        window.open(urlvar, "_blank");
+        last_site=urlvar;
+    }
+    }
+    if(datr[datr.length-1]=='dex' || datr[datr.length-1]=='dexonline' || datr[datr.length-1]=='online' & datr[datr.length-2]=='dex'){
+        datr.pop();
+        datr.pop();
+
+        i=0;
+        while(i<datr.length){
+            date=date+"+"+datr[i];
+            i++;
+        }
+        urlvar="https://dexonline.ro/definitie/"+date;
+     
+        if(last_site != urlvar){
+        window.open(urlvar, "_blank");
+        last_site=urlvar;
+    }
     }
 if(input=='cat este ceasul?' || input=='cat este ceasul' || input=='cât este ceasul?' || input=='cât este ceasul'){    timer_start=false;
 
@@ -64,14 +114,20 @@ if(input=='in ce data suntem?' || input=='în ce dată suntem'){
     timer_start=false;
     document.getElementById('out').innerHTML= zilele_saptamanii[d.getDay()] +' '+d.getDate()+' '+lunile_anului[d.getMonth()]+' '+d.getFullYear();
 }
-if(datr.length==3 & datr[0]=='timer' & timer_start==false){
+if(datr.length==3 & datr[0]=='timer' & timer_start==false || datr.length==3 & datr[0]=='temporizator' & timer_start==false){
     if(datr[1]=='un' || datr[1]=='o'){datr[1]=1;}
     if(datr[1]=='două'){datr[1]=2;}
+    if(datr[1]=='trei'){datr[1]=3;}
+    if(datr[1]=='patru'){datr[1]=4;}
+    if(datr[1]=='cinci'){datr[1]=5;}
+
+
+
 
 timer_start=true;
-if(datr[2]=='min'){
+if(datr[2]=='min' || datr[2]=='minute' || datr[2]=='minut'){
 timer=60*datr[1];}
-if(datr[2]=='se'){
+if(datr[2]=='se' || datr[2]=='sec' || datr[2]=='secu' || datr[2]=='secun' || datr[2]=='secundă' || datr[2]=='secunde'   ){
 timer=datr[1];}
 
 setInterval(timer_down, 1000);
@@ -87,19 +143,20 @@ if(datr.length==2 & datr[0]=='timer' & datr[1]=='stop'){
 if(input=='reîncarcă' || input=='refresh'){
         window.open('index.html', '_self')
     }
-if(input=='stopwatch' || input=='cronometru')    {
+if(input=='stopwatch' & !cronobool || input=='cronometru' & !cronobool)    {
     timp=0;
-    stopwatchb=true;
-    setInterval(cronometru, 1000);
-
+    cronobool=true;
+    setInterval(cronometru_start, 1000);
 }
-if(input=='stop'){stopwatchb=false;}
+if(input=='stop' || input=='top'){cronobool=false;}
 }
-function cronometru(){
-    if(stopwatchb){
+function cronometru_start(){
+    if(cronobool){
    tout=parseInt(timp/60)+' : '+timp%60;
     document.getElementById('out').innerHTML=tout;
+    document.title=tout+'-Aurora'
    timp=timp+1;
+   
 }
 }
 function timer_down(){
@@ -107,7 +164,7 @@ function timer_down(){
     tleft=parseInt(timer/60)+' : '+timer%60;
     document.getElementById('out').innerHTML=tleft;
     if(timer>0){
-    timer=timer-1;}}
+    timer=timer-1;document.title=tleft+'-Aurora'}}
 }
 
 function voice_detect(){ 
@@ -125,9 +182,11 @@ function voice_detect(){
 				.map(result => result.transcript)
 				.join('')
 
+                console.log(transcript);
 			if(transcript=='Aurora'){
                 document.getElementById('out').innerHTML='Ascult...'
 start1=true;
+document.title='Aurora-Ascult...';
             }
             if(start1){
                 if(transcript!='Aurora'){
