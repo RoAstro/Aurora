@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora</title>
+    <style>
+        h1,h2,div,h3,p{font-family: Arial, Helvetica, sans-serif;}
+    </style>
+</head>
+<body bgcolor="lightblue">
+    <center>
+        <h1 style="font-size:4rem ;">Aurora</h1>
+ <div  style="width: 50%;border-style: solid;border-radius: 10px;">
+    <br>
+<input oninput="function1()" type="search" id="input" style="background-color: lightblue;height: 45px;width: 90%;border-radius: 10px;font-size: 2.3rem;">
+
+<br><br>
+<div style="width: 80%;border-style: solid;border-radius: 10px;"><h2 id="out">RASPUNS</h2></div>
+<br>
+</div><br>
+    </div>
+    </center>
+    <script>
+        stopwatchb=false;
+        timer_start=false;
+var start1=false;
+
+        var zilele_saptamanii=['Duminica','Luni', 'Marti', 'Miercuri', 'Joi', 'Vineri', 'Sambata']
+        var lunile_anului=['Ianuarie', 'Februarie', "Martie", 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie']
+
+voice_detect();
+
+
+
+
+
+
+
+        function function1(){
+    d= new Date();
+
+    input=document.getElementById('input').value.toLowerCase();
+    
+    datr=input.split(" ");
+
+date='';
+    if(datr[datr.length-1]=='google'){
+        datr.pop();
+        i=0;
+        while(i<datr.length){
+            date=date+"+"+datr[i];
+            i++;
+        }
+        urlvar="https://www.google.com/search?q="+date;
+        window.open(urlvar, "_blank");
+    }
+if(input=='cat este ceasul?' || input=='cat este ceasul' || input=='cât este ceasul?' || input=='cât este ceasul'){    timer_start=false;
+
+    document.getElementById('out').innerHTML=d.getHours()+':'+d.getMinutes();
+
+}
+if(input=='in ce data suntem?' || input=='în ce dată suntem'){
+    timer_start=false;
+    document.getElementById('out').innerHTML= zilele_saptamanii[d.getDay()] +' '+d.getDate()+' '+lunile_anului[d.getMonth()]+' '+d.getFullYear();
+}
+if(datr.length==3 & datr[0]=='timer' & timer_start==false){
+    if(datr[1]=='un' || datr[1]=='o'){datr[1]=1;}
+    if(datr[1]=='două'){datr[1]=2;}
+
+timer_start=true;
+if(datr[2]=='min'){
+timer=60*datr[1];}
+if(datr[2]=='se'){
+timer=datr[1];}
+
+setInterval(timer_down, 1000);
+}
+if(datr.length==2 & datr[1]=='timer' & datr[0]=='stop'){
+    timer_start=false;
+    document.getElementById('out').innerHTML='RASPUNS'
+}
+if(datr.length==2 & datr[0]=='timer' & datr[1]=='stop'){
+    timer_start=false;
+}
+
+if(input=='reîncarcă' || input=='refresh'){
+        window.open('index.html', '_self')
+    }
+if(input=='stopwatch' || input=='cronometru')    {
+    timp=0;
+    stopwatchb=true;
+    setInterval(cronometru, 1000);
+
+}
+if(input=='stop'){stopwatchb=false;}
+}
+function cronometru(){
+    if(stopwatchb){
+   tout=parseInt(timp/60)+' : '+timp%60;
+    document.getElementById('out').innerHTML=tout;
+   timp=timp+1;
+}
+}
+function timer_down(){
+  if(timer_start){
+    tleft=parseInt(timer/60)+' : '+timer%60;
+    document.getElementById('out').innerHTML=tleft;
+    if(timer>0){
+    timer=timer-1;}}
+}
+
+function voice_detect(){ 
+    
+	var speech = true;
+		window.SpeechRecognition = window.SpeechRecognition
+						|| window.webkitSpeechRecognition;
+
+		const recognition = new SpeechRecognition();
+		recognition.interimResults = true;
+
+		recognition.addEventListener('result', e => {
+			const transcript = Array.from(e.results)
+				.map(result => result[0])
+				.map(result => result.transcript)
+				.join('')
+
+			if(transcript=='Aurora'){
+                document.getElementById('out').innerHTML='Ascult...'
+start1=true;
+            }
+            if(start1){
+                if(transcript!='Aurora'){
+                document.getElementById("input").value = transcript;
+        
+        function1();}
+            }
+		});
+
+		if (speech == true) {
+			recognition.start();
+			recognition.addEventListener('end', recognition.start);
+		}
+}
+
+
+
+
+    </script>
+   
+</body>
+</html>
