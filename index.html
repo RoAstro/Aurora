@@ -8,7 +8,7 @@
         h1,h2,div,h3,p{font-family: Arial, Helvetica, sans-serif;}
     </style>
 </head>
-<body bgcolor="lightblue">
+<body onclick="console.log(12345);start1=true;voice_detect()" bgcolor="lightblue">
     <center>
         <h1 style="font-size:4rem ;">Aurora</h1>
  <div  style="width: 50%;border-style: solid;border-radius: 10px;">
@@ -22,14 +22,16 @@
     </div>
     </center>
     <script>
+    var start1=false;
+
+        voice_detect();
+
         cronobool=false;
         timer_start=false;
-var start1=false;
 
         var zilele_saptamanii=['Duminica','Luni', 'Marti', 'Miercuri', 'Joi', 'Vineri', 'Sambata']
         var lunile_anului=['Ianuarie', 'Februarie', "Martie", 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie']
 
-voice_detect();
 
 
 last_site='';
@@ -161,10 +163,13 @@ function cronometru_start(){
 }
 function timer_down(){
   if(timer_start){
+
     tleft=parseInt(timer/60)+' : '+timer%60;
     document.getElementById('out').innerHTML=tleft;
     if(timer>0){
-    timer=timer-1;document.title=tleft+'-Aurora'}}
+    timer=timer-1;  }else{timer_start=false}
+    
+    document.title=tleft+'-Aurora';}
 }
 
 function voice_detect(){ 
@@ -182,7 +187,7 @@ function voice_detect(){
 				.map(result => result.transcript)
 				.join('')
 
-                console.log(transcript);
+              console.log(transcript);
 			if(transcript=='Aurora'){
                 document.getElementById('out').innerHTML='Ascult...'
 start1=true;
