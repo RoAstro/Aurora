@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +8,13 @@
         h1,h2,div,h3,p{font-family: Arial, Helvetica, sans-serif;}
     </style>
 </head>
-<body onclick="console.log(12345);start1=true;voice_detect()" bgcolor="lightblue">
+<body >
     <center>
         <h1 style="font-size:4rem ;">Aurora</h1>
+        <img src="logo1.jpeg" onclick="start1=true;document.getElementById('out').innerHTML='Ascult...';voice_detect()"  width="150px" height="150px" alt="logo" srcset="">
  <div  style="width: 50%;border-style: solid;border-radius: 10px;">
     <br>
-<input oninput="function1()" type="search" id="input" style="background-color: lightblue;height: 45px;width: 90%;border-radius: 10px;font-size: 2.3rem;">
+<input oninput="function1()" type="search" id="input" style="height: 45px;width: 90%;border-radius: 10px;font-size: 2.3rem;">
 
 <br><br>
 <div style="width: 80%;border-style: solid;border-radius: 10px;"><h2 id="out">RASPUNS</h2></div>
@@ -189,7 +190,7 @@ function voice_detect(){
 
               console.log(transcript);
 			if(transcript=='Aurora'){
-                document.getElementById('out').innerHTML='Ascult...'
+                document.getElementById('out').innerHTML='Ascult...';
 start1=true;
 document.title='Aurora-Ascult...';
             }
